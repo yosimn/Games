@@ -1,0 +1,171 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    direction: rtl;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 500px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+}
+
+.score {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.game-area {
+    height: 400px;
+    background-color: #333;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        #333 0px,
+        #333 50px,
+        #444 50px,
+        #444 100px
+    );
+    background-size: 100% 100px;
+    animation: moveRoad 1s linear infinite;
+}
+
+@keyframes moveRoad {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: 0 100px;
+    }
+}
+
+.car {
+    width: 50px;
+    height: 80px;
+    background-color: red;
+    position: absolute;
+    bottom: 20px;
+    left: calc(50% - 25px);
+    border-radius: 8px;
+}
+
+.obstacle {
+    width: 50px;
+    height: 80px;
+    background-color: blue;
+    position: absolute;
+    border-radius: 8px;
+}
+
+.controls {
+    margin-bottom: 20px;
+}
+
+#start-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+#start-btn:hover {
+    background-color: #3e8e41;
+}
+
+.mobile-controls {
+    display: flex;
+    justify-content: space-between;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+.mobile-controls button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 45%;
+}
+
+.mobile-controls button:hover {
+    background-color: #0056b3;
+}
+
+.instructions {
+    margin-top: 20px;
+    text-align: right;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+.instructions h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.instructions p {
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.game-over {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 24px;
+    display: none;
+    z-index: 10;
+}
+
+/* מכונית עם עיצוב מפורט יותר */
+.car::before, .obstacle::before {
+    content: '';
+    position: absolute;
+    width: 48px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    bottom: 5px;
+    left: 1px;
+    border-radius: 0 0 4px 4px;
+}
+
+.car::after, .obstacle::after {
+    content: '';
+    position: absolute;
+    width: 44px;
+    height: 15px;
+    background-color: rgba(255, 255, 255, 0.3);
+    top: 10px;
+    left: 3px;
+    border-radius: 4px;
+} 
