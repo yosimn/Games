@@ -31,45 +31,177 @@ body {
 .game-area {
     flex: 1;
     height: calc(100vh - 200px);
-    background-color: #333;
+    background-color: #444;
     position: relative;
     overflow: hidden;
-    background-image: repeating-linear-gradient(
-        to bottom,
-        #333 0px,
-        #333 50px,
-        #444 50px,
-        #444 100px
-    );
-    background-size: 100% 100px;
+    background-image: 
+        repeating-linear-gradient(
+            to right,
+            transparent 0%,
+            transparent 24%,
+            #555 24%,
+            #555 25%,
+            transparent 25%,
+            transparent 49%,
+            #555 49%,
+            #555 50%,
+            transparent 50%,
+            transparent 74%,
+            #555 74%,
+            #555 75%,
+            transparent 75%,
+            transparent 100%
+        ),
+        repeating-linear-gradient(
+            to bottom,
+            transparent 0px,
+            transparent 30px,
+            white 30px,
+            white 40px
+        );
+    background-size: 100% 100%, 100% 100px;
     animation: moveRoad 1s linear infinite;
 }
 
 @keyframes moveRoad {
     0% {
-        background-position: 0 0;
+        background-position: 0 0, 0 0;
     }
     100% {
-        background-position: 0 100px;
+        background-position: 0 0, 0 100px;
     }
 }
 
 .car {
     width: 50px;
-    height: 80px;
-    background-color: red;
+    height: 90px;
     position: absolute;
     bottom: 20px;
     left: calc(50% - 25px);
-    border-radius: 8px;
+    border-radius: 10px 10px 5px 5px;
+    background: linear-gradient(to bottom, #d40000 0%, #ff0000 50%, #d40000 100%);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    z-index: 10;
+}
+
+.car::before, .car::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 18px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+}
+
+.car::before {
+    bottom: 5px;
+    left: 5px;
+}
+
+.car::after {
+    bottom: 5px;
+    right: 5px;
+}
+
+.car .windshield {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    top: 15px;
+    left: 5px;
+    background: linear-gradient(to bottom, #aaddff 0%, #77aadd 100%);
+    border-radius: 5px;
+}
+
+.car .lights-front {
+    position: absolute;
+    width: 8px;
+    height: 5px;
+    background-color: #ffcc00;
+    border-radius: 2px;
+    top: 5px;
+}
+
+.car .light-left {
+    left: 5px;
+}
+
+.car .light-right {
+    right: 5px;
 }
 
 .obstacle {
     width: 50px;
-    height: 80px;
-    background-color: blue;
+    height: 90px;
     position: absolute;
-    border-radius: 8px;
+    border-radius: 10px 10px 5px 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    z-index: 5;
+}
+
+.obstacle.blue {
+    background: linear-gradient(to bottom, #000088 0%, #0000ff 50%, #000088 100%);
+}
+
+.obstacle.green {
+    background: linear-gradient(to bottom, #006600 0%, #00cc00 50%, #006600 100%);
+}
+
+.obstacle.purple {
+    background: linear-gradient(to bottom, #660066 0%, #cc00cc 50%, #660066 100%);
+}
+
+.obstacle.yellow {
+    background: linear-gradient(to bottom, #886600 0%, #ffcc00 50%, #886600 100%);
+}
+
+.obstacle::before, .obstacle::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 18px;
+    background-color: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+}
+
+.obstacle::before {
+    bottom: 5px;
+    left: 5px;
+}
+
+.obstacle::after {
+    bottom: 5px;
+    right: 5px;
+}
+
+.obstacle .windshield {
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    top: 15px;
+    left: 5px;
+    background: linear-gradient(to bottom, #aaddff 0%, #77aadd 100%);
+    border-radius: 5px;
+}
+
+.obstacle .lights-back {
+    position: absolute;
+    width: 8px;
+    height: 5px;
+    background-color: #ff0000;
+    border-radius: 2px;
+    bottom: 10px;
+}
+
+.obstacle .light-left {
+    left: 5px;
+}
+
+.obstacle .light-right {
+    right: 5px;
 }
 
 .controls {
@@ -141,27 +273,4 @@ body {
     font-size: 24px;
     display: none;
     z-index: 10;
-}
-
-/* מכונית עם עיצוב מפורט יותר */
-.car::before, .obstacle::before {
-    content: '';
-    position: absolute;
-    width: 48px;
-    height: 20px;
-    background-color: rgba(0, 0, 0, 0.2);
-    bottom: 5px;
-    left: 1px;
-    border-radius: 0 0 4px 4px;
-}
-
-.car::after, .obstacle::after {
-    content: '';
-    position: absolute;
-    width: 44px;
-    height: 15px;
-    background-color: rgba(255, 255, 255, 0.3);
-    top: 10px;
-    left: 3px;
-    border-radius: 4px;
 } 

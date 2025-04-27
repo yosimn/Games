@@ -6,11 +6,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const rightButton = document.getElementById('right-btn');
     const gameArea = document.querySelector('.game-area');
     
+    // הוספת אלמנטים למכונית השחקן
+    const windshield = document.createElement('div');
+    windshield.classList.add('windshield');
+    player.appendChild(windshield);
+    
+    const lightLeft = document.createElement('div');
+    lightLeft.classList.add('lights-front', 'light-left');
+    player.appendChild(lightLeft);
+    
+    const lightRight = document.createElement('div');
+    lightRight.classList.add('lights-front', 'light-right');
+    player.appendChild(lightRight);
+    
     let gameStarted = false;
     let score = 0;
     let animationId;
     let speed = 5;
-    let playerPosition = 50; // באחוזים
+    
+    // הגדרת נתיבים
+    const lanes = [12.5, 37.5, 62.5, 87.5]; // מיקום באחוזים של 4 נתיבים
+    let currentLane = 2; // נתיב התחלתי (מתוך 0-3)
+    
     const playerWidth = 50; // רוחב השחקן בפיקסלים
     let gameAreaWidth = window.innerWidth; // רוחב אזור המשחק
     const obstacleFrequency = 1500; // תדירות יצירת מכשולים במילישניות
@@ -20,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // עדכון גודל אזור המשחק בעת שינוי גודל חלון
     window.addEventListener('resize', () => {
         gameAreaWidth = window.innerWidth;
-        player.style.left = `calc(${playerPosition}% - ${playerWidth/2}px)`;
+        updatePlayerPosition();
     });
     
     // יצירת הודעת סיום משחק
@@ -78,11 +95,16 @@ document.addEventListener('DOMContentLoaded', () => {
         obstacles = [];
         score = 0;
         scoreElement.textContent = '0';
-        playerPosition = 50;
-        player.style.left = `calc(${playerPosition}% - ${playerWidth/2}px)`;
+        currentLane = 2; // החזרת השחקן לנתיב האמצעי
+        updatePlayerPosition();
         gameOverElement.style.display = 'none';
         speed = 5;
         lastObstacleTime = 0;
+    }
+
+    function updatePlayerPosition() {
+        const lanePosition = lanes[currentLane];
+        player.style.left = `calc(${lanePosition}% - ${playerWidth/2}px)`;
     }
 
     function handleKeyDown(e) {
@@ -98,38 +120,53 @@ document.addEventListener('DOMContentLoaded', () => {
     function movePlayer(direction) {
         if (!gameStarted) return;
         
-        const moveStep = 3; // צעד תנועה קטן יותר למסך גדול
-        
-        if (direction === 'left' && playerPosition > 0) {
-            playerPosition = Math.max(0, playerPosition - moveStep);
-        } else if (direction === 'right' && playerPosition < 100) {
-            playerPosition = Math.min(100, playerPosition + moveStep);
+        if (direction === 'left' && currentLane > 0) {
+            currentLane--;
+        } else if (direction === 'right' && currentLane < lanes.length - 1) {
+            currentLane++;
         }
         
-        player.style.left = `calc(${playerPosition}% - ${playerWidth/2}px)`;
+        updatePlayerPosition();
     }
 
     function createObstacle() {
         const obstacle = document.createElement('div');
         obstacle.classList.add('obstacle');
         
-        // מיקום אקראי לרוחב הכביש
-        const position = Math.random() * 80 + 10; // בין 10% ל-90%
-        obstacle.style.left = `calc(${position}% - 25px)`;
-        obstacle.style.top = '-80px'; // מחוץ לאזור המשחק בתחילה
+        // בחירת נתיב אקראי
+        const lane = Math.floor(Math.random() * lanes.length);
+        const lanePosition = lanes[lane];
         
         // צבע אקראי
-        const colors = ['blue', 'green', 'purple', 'orange'];
-        obstacle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        const colors = ['blue', 'green', 'purple', 'yellow'];
+        const colorClass = colors[Math.floor(Math.random() * colors.length)];
+        obstacle.classList.add(colorClass);
+        
+        // הגדרת מיקום
+        obstacle.style.left = `calc(${lanePosition}% - 25px)`;
+        obstacle.style.top = '-90px'; // מחוץ לאזור המשחק בתחילה
+        
+        // הוספת אלמנטים למכונית
+        const windshield = document.createElement('div');
+        windshield.classList.add('windshield');
+        obstacle.appendChild(windshield);
+        
+        const lightLeft = document.createElement('div');
+        lightLeft.classList.add('lights-back', 'light-left');
+        obstacle.appendChild(lightLeft);
+        
+        const lightRight = document.createElement('div');
+        lightRight.classList.add('lights-back', 'light-right');
+        obstacle.appendChild(lightRight);
         
         gameArea.appendChild(obstacle);
         
         obstacles.push({
             element: obstacle,
-            position: position,
-            top: -80,
+            lane: lane,
+            top: -90,
             width: 50, // רוחב המכשול בפיקסלים
-            height: 80 // גובה המכשול בפיקסלים
+            height: 90 // גובה המכשול בפיקסלים
         });
     }
 
@@ -170,12 +207,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkCollision(obstacle) {
+        // בדיקה אם המכשול והשחקן באותו נתיב
+        if (obstacle.lane !== currentLane) {
+            return false;
+        }
+        
         const playerRect = player.getBoundingClientRect();
         const obstacleRect = obstacle.element.getBoundingClientRect();
         
         return !(
-            playerRect.right < obstacleRect.left ||
-            playerRect.left > obstacleRect.right ||
             playerRect.bottom < obstacleRect.top ||
             playerRect.top > obstacleRect.bottom
         );
