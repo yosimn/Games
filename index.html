@@ -9,8 +9,18 @@
 <body>
     <div class="game-container">
         <div class="score">ניקוד: <span id="score">0</span></div>
-        <div class="game-area">
-            <div id="player" class="car"></div>
+        <div class="game-content">
+            <div class="game-area">
+                <div id="player" class="car"></div>
+                <div class="instructions-overlay">
+                    <div class="instructions">
+                        <h2>הוראות משחק</h2>
+                        <p>השתמש במקשי החיצים ← → או בכפתורים למטה כדי לעבור בין הנתיבים.</p>
+                        <p>נסה להימנע מהתנגשות עם מכוניות אחרות ועבור בין הנתיבים במהירות!</p>
+                        <p>הניקוד עולה עם כל מכונית שהצלחת לחמוק ממנה.</p>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="controls">
             <button id="start-btn">התחל משחק</button>
@@ -18,12 +28,6 @@
                 <button id="left-btn">שמאלה</button>
                 <button id="right-btn">ימינה</button>
             </div>
-        </div>
-        <div class="instructions">
-            <h2>הוראות משחק</h2>
-            <p>השתמש במקשי החיצים ← → או בכפתורים למטה כדי לעבור בין הנתיבים.</p>
-            <p>נסה להימנע מהתנגשות עם מכוניות אחרות ועבור בין הנתיבים במהירות!</p>
-            <p>הניקוד עולה עם כל מכונית שהצלחת לחמוק ממנה.</p>
         </div>
     </div>
     <script src="script.js"></script>

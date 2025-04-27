@@ -15,7 +15,7 @@ body {
 .game-container {
     width: 100%;
     height: 100vh;
-    background-color: white;
+    background-color: black;
     display: flex;
     flex-direction: column;
 }
@@ -23,34 +23,44 @@ body {
 .score {
     font-size: 24px;
     font-weight: bold;
-    padding: 15px;
+    padding: 10px 15px;
     background-color: #222;
     color: white;
+    z-index: 100;
+    height: 50px;
+}
+
+.game-content {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
 }
 
 .game-area {
-    flex: 1;
-    height: calc(100vh - 200px);
-    background-color: #444;
+    width: 100%;
+    height: 100%;
+    background-color: #333;
     position: relative;
     overflow: hidden;
     background-image: 
-        repeating-linear-gradient(
+        linear-gradient(
             to right,
-            transparent 0%,
-            transparent 24%,
-            #555 24%,
+            rgba(75, 75, 75, 0.7) 0%,
+            rgba(75, 75, 75, 0.7) 23%,
+            #555 23%,
             #555 25%,
-            transparent 25%,
-            transparent 49%,
-            #555 49%,
+            rgba(75, 75, 75, 0.7) 25%,
+            rgba(75, 75, 75, 0.7) 48%,
+            #555 48%,
             #555 50%,
-            transparent 50%,
-            transparent 74%,
-            #555 74%,
+            rgba(75, 75, 75, 0.7) 50%,
+            rgba(75, 75, 75, 0.7) 73%,
+            #555 73%,
             #555 75%,
-            transparent 75%,
-            transparent 100%
+            rgba(75, 75, 75, 0.7) 75%,
+            rgba(75, 75, 75, 0.7) 98%,
+            #555 98%,
+            #555 100%
         ),
         repeating-linear-gradient(
             to bottom,
@@ -63,6 +73,36 @@ body {
     animation: moveRoad 1s linear infinite;
 }
 
+.instructions-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    z-index: 50;
+}
+
+.instructions {
+    padding: 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.instructions h2 {
+    margin-bottom: 10px;
+    color: #fff;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
+.instructions p {
+    margin-bottom: 8px;
+    line-height: 1.4;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+}
+
 @keyframes moveRoad {
     0% {
         background-position: 0 0, 0 0;
@@ -73,140 +113,224 @@ body {
 }
 
 .car {
-    width: 50px;
-    height: 90px;
+    width: 60px;
+    height: 110px;
     position: absolute;
     bottom: 20px;
-    left: calc(50% - 25px);
-    border-radius: 10px 10px 5px 5px;
-    background: linear-gradient(to bottom, #d40000 0%, #ff0000 50%, #d40000 100%);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
+    left: calc(50% - 30px);
     z-index: 10;
+    transform-style: preserve-3d;
 }
 
-.car::before, .car::after {
-    content: '';
+.car-body {
     position: absolute;
-    width: 10px;
-    height: 18px;
-    background-color: #111;
-    border-radius: 5px;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #005bbd 0%, #0078f2 30%, #009cff 60%, #005bbd 100%);
+    border-radius: 15px 15px 8px 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
 }
 
-.car::before {
-    bottom: 5px;
+.car-top {
+    position: absolute;
+    width: 70%;
+    height: 30%;
+    top: 15%;
+    left: 15%;
+    background: linear-gradient(to bottom, #222 0%, #444 100%);
+    border-radius: 50% 50% 5px 5px / 20% 20% 5px 5px;
+    z-index: 2;
+}
+
+.car-windshield {
+    position: absolute;
+    width: 85%;
+    height: 20%;
+    top: 10%;
+    left: 7.5%;
+    background: linear-gradient(to bottom, #a3d6ff 0%, #68a4d9 100%);
+    border-radius: 10px 10px 0 0;
+    z-index: 1;
+}
+
+.car-headlight {
+    position: absolute;
+    width: 15px;
+    height: 6px;
+    background-color: #ffcc00;
+    border-radius: 3px;
+    top: 5px;
+    box-shadow: 0 0 10px #ffcc00;
+}
+
+.car-headlight.left {
     left: 5px;
 }
 
-.car::after {
-    bottom: 5px;
+.car-headlight.right {
     right: 5px;
 }
 
-.car .windshield {
-    content: '';
+.car-wheel {
+    position: absolute;
+    width: 14px;
+    height: 24px;
+    background-color: #111;
+    border-radius: 7px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.8), inset 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.car-wheel.front-left {
+    top: 30px;
+    left: -4px;
+}
+
+.car-wheel.front-right {
+    top: 30px;
+    right: -4px;
+}
+
+.car-wheel.back-left {
+    bottom: 10px;
+    left: -4px;
+}
+
+.car-wheel.back-right {
+    bottom: 10px;
+    right: -4px;
+}
+
+.car-grill {
     position: absolute;
     width: 40px;
-    height: 30px;
-    top: 15px;
-    left: 5px;
-    background: linear-gradient(to bottom, #aaddff 0%, #77aadd 100%);
-    border-radius: 5px;
-}
-
-.car .lights-front {
-    position: absolute;
-    width: 8px;
     height: 5px;
-    background-color: #ffcc00;
+    background-color: #222;
+    top: 8px;
+    left: 10px;
     border-radius: 2px;
-    top: 5px;
 }
 
-.car .light-left {
+.car-bumper {
+    position: absolute;
+    width: 50px;
+    height: 8px;
+    background-color: #333;
+    bottom: 5px;
     left: 5px;
-}
-
-.car .light-right {
-    right: 5px;
+    border-radius: 3px;
 }
 
 .obstacle {
-    width: 50px;
-    height: 90px;
+    width: 60px;
+    height: 110px;
     position: absolute;
-    border-radius: 10px 10px 5px 5px;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.4);
     z-index: 5;
+    transform-style: preserve-3d;
 }
 
-.obstacle.blue {
-    background: linear-gradient(to bottom, #000088 0%, #0000ff 50%, #000088 100%);
-}
-
-.obstacle.green {
-    background: linear-gradient(to bottom, #006600 0%, #00cc00 50%, #006600 100%);
-}
-
-.obstacle.purple {
-    background: linear-gradient(to bottom, #660066 0%, #cc00cc 50%, #660066 100%);
-}
-
-.obstacle.yellow {
-    background: linear-gradient(to bottom, #886600 0%, #ffcc00 50%, #886600 100%);
-}
-
-.obstacle::before, .obstacle::after {
-    content: '';
+.obstacle-body {
     position: absolute;
-    width: 10px;
-    height: 18px;
-    background-color: #111;
-    border-radius: 5px;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    border-radius: 15px 15px 8px 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
 }
 
-.obstacle::before {
-    bottom: 5px;
-    left: 5px;
+.obstacle.blue .obstacle-body {
+    background: linear-gradient(to bottom, #003366 0%, #0055a5 30%, #0066cc 60%, #003366 100%);
 }
 
-.obstacle::after {
-    bottom: 5px;
-    right: 5px;
+.obstacle.green .obstacle-body {
+    background: linear-gradient(to bottom, #124400 0%, #1e7200 30%, #25a000 60%, #124400 100%);
 }
 
-.obstacle .windshield {
+.obstacle.yellow .obstacle-body {
+    background: linear-gradient(to bottom, #805800 0%, #cc8a00 30%, #ffbb00 60%, #805800 100%);
+}
+
+.obstacle.red .obstacle-body {
+    background: linear-gradient(to bottom, #660000 0%, #a30000 30%, #cc0000 60%, #660000 100%);
+}
+
+.obstacle-top {
     position: absolute;
-    width: 40px;
-    height: 30px;
-    top: 15px;
-    left: 5px;
-    background: linear-gradient(to bottom, #aaddff 0%, #77aadd 100%);
-    border-radius: 5px;
+    width: 70%;
+    height: 30%;
+    top: 15%;
+    left: 15%;
+    background: linear-gradient(to bottom, #222 0%, #444 100%);
+    border-radius: 50% 50% 5px 5px / 20% 20% 5px 5px;
+    z-index: 2;
 }
 
-.obstacle .lights-back {
+.obstacle-windshield {
     position: absolute;
-    width: 8px;
-    height: 5px;
+    width: 85%;
+    height: 20%;
+    top: 10%;
+    left: 7.5%;
+    background: linear-gradient(to bottom, #a3d6ff 0%, #68a4d9 100%);
+    border-radius: 10px 10px 0 0;
+    z-index: 1;
+}
+
+.obstacle-taillight {
+    position: absolute;
+    width: 15px;
+    height: 6px;
     background-color: #ff0000;
-    border-radius: 2px;
+    border-radius: 3px;
     bottom: 10px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 
-.obstacle .light-left {
+.obstacle-taillight.left {
     left: 5px;
 }
 
-.obstacle .light-right {
+.obstacle-taillight.right {
     right: 5px;
+}
+
+.obstacle-wheel {
+    position: absolute;
+    width: 14px;
+    height: 24px;
+    background-color: #111;
+    border-radius: 7px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.8), inset 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+.obstacle-wheel.front-left {
+    top: 30px;
+    left: -4px;
+}
+
+.obstacle-wheel.front-right {
+    top: 30px;
+    right: -4px;
+}
+
+.obstacle-wheel.back-left {
+    bottom: 10px;
+    left: -4px;
+}
+
+.obstacle-wheel.back-right {
+    bottom: 10px;
+    right: -4px;
 }
 
 .controls {
-    padding: 15px;
+    padding: 10px 15px;
     background-color: #222;
+    z-index: 100;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 #start-btn {
@@ -217,7 +341,7 @@ body {
     font-size: 18px;
     border-radius: 5px;
     cursor: pointer;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 #start-btn:hover {
@@ -235,7 +359,7 @@ body {
     background-color: #007BFF;
     color: white;
     border: none;
-    padding: 15px 30px;
+    padding: 10px 20px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
@@ -244,21 +368,6 @@ body {
 
 .mobile-controls button:hover {
     background-color: #0056b3;
-}
-
-.instructions {
-    padding: 15px;
-    background-color: #f9f9f9;
-}
-
-.instructions h2 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.instructions p {
-    margin-bottom: 8px;
-    line-height: 1.4;
 }
 
 .game-over {
@@ -272,5 +381,31 @@ body {
     border-radius: 10px;
     font-size: 24px;
     display: none;
-    z-index: 10;
+    z-index: 100;
+}
+
+@media (max-width: 768px) {
+    .instructions-overlay {
+        top: 10px;
+        right: 10px;
+        width: 200px;
+    }
+    
+    .instructions {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+    
+    .instructions h2 {
+        font-size: 1.2em;
+    }
+    
+    .controls {
+        height: 90px;
+    }
+    
+    .mobile-controls button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
 } 
