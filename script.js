@@ -12,10 +12,16 @@ document.addEventListener('DOMContentLoaded', () => {
     let speed = 5;
     let playerPosition = 50; // באחוזים
     const playerWidth = 50; // רוחב השחקן בפיקסלים
-    const gameAreaWidth = gameArea.offsetWidth;
+    let gameAreaWidth = window.innerWidth; // רוחב אזור המשחק
     const obstacleFrequency = 1500; // תדירות יצירת מכשולים במילישניות
     let lastObstacleTime = 0;
     let obstacles = [];
+    
+    // עדכון גודל אזור המשחק בעת שינוי גודל חלון
+    window.addEventListener('resize', () => {
+        gameAreaWidth = window.innerWidth;
+        player.style.left = `calc(${playerPosition}% - ${playerWidth/2}px)`;
+    });
     
     // יצירת הודעת סיום משחק
     const gameOverElement = document.createElement('div');
@@ -92,10 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function movePlayer(direction) {
         if (!gameStarted) return;
         
+        const moveStep = 3; // צעד תנועה קטן יותר למסך גדול
+        
         if (direction === 'left' && playerPosition > 0) {
-            playerPosition = Math.max(0, playerPosition - 5);
+            playerPosition = Math.max(0, playerPosition - moveStep);
         } else if (direction === 'right' && playerPosition < 100) {
-            playerPosition = Math.min(100, playerPosition + 5);
+            playerPosition = Math.min(100, playerPosition + moveStep);
         }
         
         player.style.left = `calc(${playerPosition}% - ${playerWidth/2}px)`;

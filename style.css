@@ -7,35 +7,33 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     min-height: 100vh;
     direction: rtl;
+    overflow: hidden;
 }
 
 .game-container {
     width: 100%;
-    max-width: 500px;
+    height: 100vh;
     background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .score {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 15px;
+    padding: 15px;
+    background-color: #222;
+    color: white;
 }
 
 .game-area {
-    height: 400px;
+    flex: 1;
+    height: calc(100vh - 200px);
     background-color: #333;
     position: relative;
     overflow: hidden;
-    margin-bottom: 20px;
     background-image: repeating-linear-gradient(
         to bottom,
         #333 0px,
@@ -75,7 +73,8 @@ body {
 }
 
 .controls {
-    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #222;
 }
 
 #start-btn {
@@ -96,7 +95,7 @@ body {
 .mobile-controls {
     display: flex;
     justify-content: space-between;
-    max-width: 300px;
+    max-width: 500px;
     margin: 0 auto;
 }
 
@@ -116,11 +115,8 @@ body {
 }
 
 .instructions {
-    margin-top: 20px;
-    text-align: right;
     padding: 15px;
     background-color: #f9f9f9;
-    border-radius: 5px;
 }
 
 .instructions h2 {
